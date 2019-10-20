@@ -14,6 +14,7 @@
 #define ID_BUTTON2 3
 #define ID_BUTTON3 4
 #define ID_BUTTON4 5
+#define ID_BUTTON5 6
 #define ID_TEXTBOX 2
 #pragma warning(push)
 #pragma warning(disable: 4996) 
@@ -126,12 +127,13 @@ static HWND hWndButton1;
 static HWND hWndButton2;
 static HWND hWndButton3;
 static HWND hWndButton4;
+static HWND hWndButton5;
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
 	HDC hdc;
-	TCHAR greeting[] = _T("Hello, Windows desktop!");
+	TCHAR greeting[] = _T("@Kyle Pereira coded this");
 
 	switch (message)
 	{
@@ -192,10 +194,23 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			(HMENU)ID_BUTTON4,       // No menu.
 			(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
 			NULL);      // Pointer not needed.
+		hWndButton5 = CreateWindow(
+			L"BUTTON",  // Predefined class; Unicode assumed 
+			L"retry",      // Button text 
+			WS_CHILD | WS_VISIBLE,  // Styles 
+			10,         // x position 
+			10,         // y position 
+			100,        // Button width
+			40,        // Button height
+			hWnd,     // Parent window
+			(HMENU)ID_BUTTON5,       // No menu.
+			(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+			NULL);      // Pointer not needed.
 
 		ShowWindow(hWndButton2, SW_HIDE);
 		ShowWindow(hWndButton3, SW_HIDE);
 		ShowWindow(hWndButton4, SW_HIDE);
+		ShowWindow(hWndButton5, SW_HIDE);
 
 		break;
 	}
@@ -249,6 +264,15 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				SetWindowText(hWndTextbox, temp.data());
 
 				ShowWindow(hWndButton4, SW_HIDE);
+				ShowWindow(hWndButton5, SW_SHOW);
+
+				break;
+			}
+			case ID_BUTTON5: {
+				SetWindowText(hWndTextbox, L"");
+
+				ShowWindow(hWndButton5, SW_HIDE);
+				ShowWindow(hWndButton1, SW_SHOW);
 
 				break;
 			}
@@ -262,9 +286,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// Here your application is laid out.
 		// For this introduction, we just print out "Hello, Windows desktop!"
 		// in the top left corner.
-		/*TextOut(hdc,
+		TextOut(hdc,
 			5, 5,
-			greeting, _tcslen(greeting));*/
+			greeting, _tcslen(greeting));
 		// End application-specific layout section.
 
 		EndPaint(hWnd, &ps);

@@ -134,7 +134,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
 	PAINTSTRUCT ps;
 	HDC hdc;
-	TCHAR greeting[] = _T("@Kyle Pereira coded this");
+	wchar_t greeting[25] = L"@Kyle Pereira coded this";
 
 	switch (message)
 	{
@@ -223,7 +223,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				strcat(msg, "1");
 				wchar_t temp[100];
 				std::mbstowcs(temp, msg, strlen(msg)+1);
-				SetWindowText(hWndTextbox, temp);
+				SetWindowTextW(hWndTextbox, temp);
 
 				ShowWindow(hWndButton1, SW_HIDE);
 				ShowWindow(hWndButton2, SW_SHOW);
@@ -236,7 +236,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				strcat(msg, "+");
 				wchar_t temp[100];
 				std::mbstowcs(temp, msg, strlen(msg)+1);
-				SetWindowText(hWndTextbox, temp);
+				SetWindowTextW(hWndTextbox, temp);
 
 				ShowWindow(hWndButton2, SW_HIDE);
 				ShowWindow(hWndButton3, SW_SHOW);
@@ -249,7 +249,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				strcat(msg, "1");
 				wchar_t temp[100];
 				std::mbstowcs(temp, msg, strlen(msg)+1);
-				SetWindowText(hWndTextbox, temp);
+				SetWindowTextW(hWndTextbox, temp);
 
 				ShowWindow(hWndButton3, SW_HIDE);
 				ShowWindow(hWndButton4, SW_SHOW);
@@ -262,7 +262,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				strcat(msg, "= I don't know");
 				wchar_t temp[100];
 				std::mbstowcs(temp, msg, strlen(msg)+1);
-				SetWindowText(hWndTextbox, temp);
+				SetWindowTextW(hWndTextbox, temp);
 
 				ShowWindow(hWndButton4, SW_HIDE);
 				ShowWindow(hWndButton5, SW_SHOW);
@@ -290,9 +290,9 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// Here your application is laid out.
 		// For this introduction, we just print out "Hello, Windows desktop!"
 		// in the top left corner.
-		TextOut(hdc,
+		/*TextOutW(hdc,
 			5, 5,
-			greeting, wcslen(greeting));
+			greeting, wcslen(greeting));*/
 		// End application-specific layout section.
 
 		EndPaint(hWnd, &ps);

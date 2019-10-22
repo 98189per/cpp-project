@@ -5,8 +5,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <tchar.h>
-#include <string>
-#include <vector>
+#include <wchar.h>
+#include <string.h>
 
 // Global variables
 
@@ -16,8 +16,8 @@
 #define ID_BUTTON4 5
 #define ID_BUTTON5 6
 #define ID_TEXTBOX 2
-#pragma warning(push)
-#pragma warning(disable: 4996) 
+
+using namespace std;
 
 // The main window class name.
 static TCHAR szWindowClass[] = _T("DesktopApp");
@@ -57,7 +57,7 @@ int CALLBACK WinMain(
 		MessageBox(NULL,
 			_T("Call to RegisterClassEx failed!"),
 			_T("Windows Desktop Guided Tour"),
-			NULL);
+			0LL);
 
 		return 1;
 	}
@@ -92,7 +92,7 @@ int CALLBACK WinMain(
 		MessageBox(NULL,
 			_T("Call to CreateWindow failed!"),
 			_T("Windows Desktop Guided Tour"),
-			NULL);
+			0LL);
 
 		return 1;
 	}
@@ -128,6 +128,7 @@ static HWND hWndButton2;
 static HWND hWndButton3;
 static HWND hWndButton4;
 static HWND hWndButton5;
+static char msg[100];
 
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
@@ -147,8 +148,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			NULL,
 			NULL);
 		hWndButton1 = CreateWindow(
-			L"BUTTON",  // Predefined class; Unicode assumed 
-			L"1",      // Button text 
+			_T("BUTTON"),  // Predefined class; Unicode assumed 
+			_T("1"),      // Button text 
 			WS_CHILD | WS_VISIBLE,  // Styles 
 			10,         // x position 
 			10,         // y position 
@@ -156,11 +157,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			40,        // Button height
 			hWnd,     // Parent window
 			(HMENU) ID_BUTTON1,       // No menu.
-			(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+			NULL,
 			NULL);      // Pointer not needed.
 		hWndButton2 = CreateWindow(
-			L"BUTTON",  // Predefined class; Unicode assumed 
-			L"+",      // Button text 
+			_T("BUTTON"),  // Predefined class; Unicode assumed 
+			_T("+"),      // Button text 
 			WS_CHILD | WS_VISIBLE,  // Styles 
 			120,         // x position 
 			10,         // y position 
@@ -168,11 +169,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			40,        // Button height
 			hWnd,     // Parent window
 			(HMENU)ID_BUTTON2,       // No menu.
-			(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+			NULL,
 			NULL);      // Pointer not needed.
 		hWndButton3 = CreateWindow(
-			L"BUTTON",  // Predefined class; Unicode assumed 
-			L"1",      // Button text 
+			_T("BUTTON"),  // Predefined class; Unicode assumed 
+			_T("1"),      // Button text 
 			WS_CHILD | WS_VISIBLE,  // Styles 
 			230,         // x position 
 			10,         // y position 
@@ -180,11 +181,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			40,        // Button height
 			hWnd,     // Parent window
 			(HMENU)ID_BUTTON3,       // No menu.
-			(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+			NULL,
 			NULL);      // Pointer not needed.
 		hWndButton4 = CreateWindow(
-			L"BUTTON",  // Predefined class; Unicode assumed 
-			L"=",      // Button text 
+			_T("BUTTON"),  // Predefined class; Unicode assumed 
+			_T("="),      // Button text 
 			WS_CHILD | WS_VISIBLE,  // Styles 
 			340,         // x position 
 			10,         // y position 
@@ -192,11 +193,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			40,        // Button height
 			hWnd,     // Parent window
 			(HMENU)ID_BUTTON4,       // No menu.
-			(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+			NULL,
 			NULL);      // Pointer not needed.
 		hWndButton5 = CreateWindow(
-			L"BUTTON",  // Predefined class; Unicode assumed 
-			L"retry",      // Button text 
+			_T("BUTTON"),  // Predefined class; Unicode assumed 
+			_T("retry"),      // Button text 
 			WS_CHILD | WS_VISIBLE,  // Styles 
 			10,         // x position 
 			10,         // y position 
@@ -204,7 +205,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			40,        // Button height
 			hWnd,     // Parent window
 			(HMENU)ID_BUTTON5,       // No menu.
-			(HINSTANCE)GetWindowLong(hWnd, GWL_HINSTANCE),
+			NULL,
 			NULL);      // Pointer not needed.
 
 		ShowWindow(hWndButton2, SW_HIDE);
@@ -218,11 +219,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		switch (LOWORD(wParam)) {
 			case ID_BUTTON1: {
 				int len = GetWindowTextLength(hWndTextbox);
-				std::vector<TCHAR> temp(len + 2);
 
-				GetWindowText(hWndTextbox, temp.data(), temp.size());
-				_tcscat(temp.data(), L"1");
-				SetWindowText(hWndTextbox, temp.data());
+				strcat(msg, "1");
+				wchar_t temp[100];
+				std::mbstowcs(temp, msg, strlen(msg)+1);
+				SetWindowText(hWndTextbox, temp);
 
 				ShowWindow(hWndButton1, SW_HIDE);
 				ShowWindow(hWndButton2, SW_SHOW);
@@ -231,11 +232,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 			case ID_BUTTON2: {
 				int len = GetWindowTextLength(hWndTextbox);
-				std::vector<TCHAR> temp(len + 2);
 
-				GetWindowText(hWndTextbox, temp.data(), temp.size());
-				_tcscat(temp.data(), L"+");
-				SetWindowText(hWndTextbox, temp.data());
+				strcat(msg, "+");
+				wchar_t temp[100];
+				std::mbstowcs(temp, msg, strlen(msg)+1);
+				SetWindowText(hWndTextbox, temp);
 
 				ShowWindow(hWndButton2, SW_HIDE);
 				ShowWindow(hWndButton3, SW_SHOW);
@@ -244,11 +245,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 			case ID_BUTTON3: {
 				int len = GetWindowTextLength(hWndTextbox);
-				std::vector<TCHAR> temp(len + 2);
-
-				GetWindowText(hWndTextbox, temp.data(), temp.size());
-				_tcscat(temp.data(), L"1");
-				SetWindowText(hWndTextbox, temp.data());
+				
+				strcat(msg, "1");
+				wchar_t temp[100];
+				std::mbstowcs(temp, msg, strlen(msg)+1);
+				SetWindowText(hWndTextbox, temp);
 
 				ShowWindow(hWndButton3, SW_HIDE);
 				ShowWindow(hWndButton4, SW_SHOW);
@@ -257,11 +258,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			}
 			case ID_BUTTON4: {
 				int len = GetWindowTextLength(hWndTextbox);
-				std::vector<TCHAR> temp(len + 15);
-
-				GetWindowText(hWndTextbox, temp.data(), temp.size());
-				_tcscat(temp.data(), L"= I don't know");
-				SetWindowText(hWndTextbox, temp.data());
+				
+				strcat(msg, "= I don't know");
+				wchar_t temp[100];
+				std::mbstowcs(temp, msg, strlen(msg)+1);
+				SetWindowText(hWndTextbox, temp);
 
 				ShowWindow(hWndButton4, SW_HIDE);
 				ShowWindow(hWndButton5, SW_SHOW);
@@ -269,7 +270,10 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 				break;
 			}
 			case ID_BUTTON5: {
-				SetWindowText(hWndTextbox, L"");
+				SetWindowText(hWndTextbox, _T(""));
+				for(int i = 0; i < 100; i++){
+					msg[i] = ' ';
+				}
 
 				ShowWindow(hWndButton5, SW_HIDE);
 				ShowWindow(hWndButton1, SW_SHOW);
@@ -288,7 +292,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		// in the top left corner.
 		TextOut(hdc,
 			5, 5,
-			greeting, _tcslen(greeting));
+			greeting, wcslen(greeting));
 		// End application-specific layout section.
 
 		EndPaint(hWnd, &ps);

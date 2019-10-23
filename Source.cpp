@@ -26,6 +26,7 @@ static TCHAR szWindowClass[] = _T("DesktopApp");
 static TCHAR szTitle[] = _T("Pro Calculator");
 
 HINSTANCE hInst;
+//HBRUSH hbrWhite;
 
 // Forward declarations of functions included in this code module:
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
@@ -139,6 +140,14 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	switch (message)
 	{
 	case WM_CREATE:{
+		hWndTextbox = CreateWindowW(
+			L"STATIC", L"Made by Kyle Pereira",
+			WS_CHILD | WS_VISIBLE,
+			0, 0, 580, 100,
+			hWnd,
+			NULL,
+			NULL,
+			NULL);
 		hWndTextbox = CreateWindow(
 			TEXT("STATIC"), TEXT(""),
 			WS_CHILD | WS_VISIBLE | WS_BORDER,
@@ -213,6 +222,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		ShowWindow(hWndButton4, SW_HIDE);
 		ShowWindow(hWndButton5, SW_HIDE);
 
+		//hbrWhite = CreateSolidBrush(RGB(255, 0 , 0)); 
+
 		break;
 	}
 	case WM_COMMAND: {
@@ -285,7 +296,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 		break;
 	}
 	case WM_PAINT:
+		//HBRUSH whitebrush;
+		//whitebrush = CreateSolidBrush(WHITE_BRUSH);
 		hdc = BeginPaint(hWnd, &ps);
+		//LPRECT rectangle;
+		//SetRect(rectangle, 0, 0, 580, 100);
 
 		// Here your application is laid out.
 		// For this introduction, we just print out "Hello, Windows desktop!"
@@ -295,8 +310,22 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 			greeting, wcslen(greeting));*/
 		// End application-specific layout section.
 
+		//SendMessageW(hWnd, WM_ERASEBKGND, 0LL, 0LL);
+		//GetClientRect(hWnd, rectangle);
+		//FillRect(GetDC(hWnd), rectangle, WHITE_BRUSH);
+
 		EndPaint(hWnd, &ps);
 		break;
+	/*case WM_ERASEBKGND: 
+		RECT rc;
+		//SetRect(&rc, 0, 0, 540, 100);
+		hdc = (HDC) wParam; 
+		GetClientRect(hWnd, &rc); 
+		//SetMapMode(hdc, MM_ANISOTROPIC); 
+		//SetWindowExtEx(hdc, 100, 100, NULL); 
+		//SetViewportExtEx(hdc, rc.right, rc.bottom, NULL); 
+		FillRect(hdc, &rc, hbrWhite); 
+		break;*/
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
